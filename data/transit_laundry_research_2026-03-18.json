@@ -1,58 +1,4 @@
 {
-  "Stanford Villa": {
-    "closest_caltrain": "California Ave",
-    "walking_distance": "1.5 mi",
-    "walk_time": "30 min",
-    "walk_time_basis": "Estimated from walking distance at 20 min/mile",
-    "washer": "No in-unit washer/dryer",
-    "washer_notes": "No in-unit laundry; official site lists on-site laundry facilities (card-operated), and Apartments.com says on-site laundry is shared resident use.",
-    "official_website": "https://www.stanfordvilla.com/apartments/ca/palo-alto/amenities",
-    "source_urls": [
-      "https://rde.stanford.edu/studenthousing/stanford-villa-apartments",
-      "https://www.apartments.com/stanford-villa-palo-alto-ca/5ezwzbq/",
-      "https://www.loopnet.com/property/3375-alma-st-palo-alto-ca-94306/06085-13228075/"
-    ],
-    "evidence_summary": "Official sources confirm on-site shared laundry rather than in-unit laundry. California Ave is the closest Caltrain stop; LoopNet showed 1.5 mi and Apartments.com showed 1.8 mi, so 1.5 mi was used.",
-    "confidence": 0.89,
-    "research_date": "2026-03-18"
-  },
-  "Montage Apartments": {
-    "closest_caltrain": "California Ave",
-    "walking_distance": "0.8 mi",
-    "walk_time": "15 min",
-    "walk_time_basis": "Listed walking time/distance from third-party map result",
-    "washer": "In-unit washer/dryer",
-    "washer_notes": "Official site says in-home washer/dryers and washer/dryer in every home; Apartments.com also lists Washer/Dryer.",
-    "official_website": "https://montagebayarea.com/",
-    "source_urls": [
-      "https://montagebayarea.com/",
-      "https://www.apartments.com/montage-apartments-palo-alto-ca/fqckbxs/",
-      "https://moovitapp.com/index/en/public_transit-El_Camino_Real_Palo_Alto_CA-SF_Bay_Area_CA-site_254528058-22",
-      "https://www.loopnet.com/property/el-camino-real-palo-alto-ca-94306/06085-14220079/"
-    ],
-    "evidence_summary": "Official site and Apartments.com both confirm in-unit washer/dryer. California Ave is the nearest Caltrain stop; LoopNet listed it at 0.8 mi / 15 min walk.",
-    "confidence": 0.77,
-    "research_date": "2026-03-18"
-  },
-  "Southwood Apartments": {
-    "closest_caltrain": "California Ave",
-    "walking_distance": "1.3 mi",
-    "walk_time": "26 min",
-    "walk_time_basis": "Estimated from walking distance at 20 min/mile using map/search distance",
-    "washer": "In-unit washer/dryer",
-    "washer_notes": "Official site says homes feature in-home washers and dryers, and Apartments.com also lists Washer/Dryer in apartment features.",
-    "official_website": "https://www.southwood-apartments.com/",
-    "source_urls": [
-      "https://www.southwood-apartments.com/",
-      "https://www.southwood-apartments.com/floorplans/one-bedroom-one-bathroom",
-      "https://www.apartments.com/southwood-apartments-palo-alto-ca/6f8zpmt/",
-      "https://www.rome2rio.com/s/Palo-Alto/California-Ave-Caltrain-Station",
-      "https://www.walkscore.com/score/middlefield-rd-and-colorado-ave-palo-alto-ca-94306"
-    ],
-    "evidence_summary": "Official site confirms in-home washer/dryer. Listing sites did not provide a walk route, so the California Ave walk time was estimated from map/search distance.",
-    "confidence": 0.74,
-    "research_date": "2026-03-18"
-  },
   "345 Sheridan Ave Unit SI FL3-ID806": {
     "closest_caltrain": "California Ave",
     "walking_distance": "0.4 mi",
@@ -69,40 +15,69 @@
     "confidence": 0.9,
     "research_date": "2026-03-18"
   },
-  "Sevens": {
-    "closest_caltrain": "Mountain View",
-    "walking_distance": "~0.75 mi",
-    "walk_time": "15 min",
-    "walk_time_basis": "Official site lists a 15-minute walk; distance back-calculated at 20 min/mile",
+  "Encasa": {
+    "closest_caltrain": "Lawrence",
+    "walking_distance": "3.0 mi",
+    "walk_time": "60 min",
+    "walk_time_basis": "Estimated from listed walking distance at 20 min/mile",
     "washer": "In-unit washer/dryer",
-    "washer_notes": "Official amenities page lists In-Unit Washer and Dryer; Apartments.com and Zillow also list in-unit washer/dryer.",
-    "official_website": "https://sevensmv.com/",
+    "washer_notes": "Official site lists In Unit Washer & Dryer - Stackable; Apartments.com also lists in-unit washer/dryer.",
+    "official_website": "https://www.encasaliving.com/Contact.aspx",
     "source_urls": [
-      "https://sevensmv.com/amenities/",
-      "https://sevensmv.com/p/transportation/",
-      "https://www.apartments.com/sevens-mountain-view-ca/3rr7vmg/",
-      "https://www.zillow.com/apartments/mountain-view-ca/sevens/9VG5jp/"
+      "https://www.encasaliving.com/Contact.aspx",
+      "https://www.apartments.com/es/encasa-sunnyvale-ca/s1ktnb6/"
     ],
-    "evidence_summary": "Official site states Mountain View Caltrain Station is a 15-minute walk from Sevens and lists in-unit washer/dryer.",
-    "confidence": 0.91,
+    "evidence_summary": "Encasa\u2019s official site lists an in-unit stackable washer/dryer. Apartments.com shows Lawrence as the closest Caltrain stop at 3.0 mi, so the walk time was estimated.",
+    "confidence": 0.84,
     "research_date": "2026-03-18"
   },
-  "Rowe at Pear Village": {
-    "closest_caltrain": "Mountain View",
-    "walking_distance": "1.13 mi",
-    "walk_time": "23 min",
-    "walk_time_basis": "Estimated from the listed 1.13 mi distance at 20 min/mile",
+  "Hartwood": {
+    "closest_caltrain": "Lawrence",
+    "walking_distance": "0.1 mi",
+    "walk_time": "1 min",
+    "walk_time_basis": "Listed walking time from Apartments.com",
     "washer": "In-unit washer/dryer",
-    "washer_notes": "Official site says Whirlpool front-load washer and dryer in unit; Apartments.com and Zillow also list in-unit laundry.",
-    "official_website": "https://rowepearvillage.com/amenities/",
+    "washer_notes": "Apartments.com lists Washer/Dryer in apartment features and says Hartwood has units with in-unit washers and dryers; the official site does not mention laundry.",
+    "official_website": "https://www.hartwoodsunnyvale.com/",
     "source_urls": [
-      "https://rowepearvillage.com/amenities/",
-      "https://www.apartments.com/rowe-at-pear-village-mountain-view-ca/7fyfd6x/",
-      "https://www.apartmenthomeliving.com/apartment-finder/Rowe-at-Pear-Village-Mountain-View-CA-94043-19859551",
-      "https://www.caltrain.com/station/mountainview"
+      "https://www.hartwoodsunnyvale.com/neighborhood/",
+      "https://www.apartments.com/hartwood-sunnyvale-ca/nzqhytq/"
     ],
-    "evidence_summary": "Official amenities page lists in-unit washer/dryer. ApartmentHomeLiving lists Mountain View Caltrain at 1.13 mi; no direct walking route was exposed, so time was estimated.",
-    "confidence": 0.79,
+    "evidence_summary": "Hartwood\u2019s official site says it is steps from Lawrence Station. Apartments.com lists Lawrence Caltrain at 0.1 mi / 1 min walk and confirms in-unit washer/dryer.",
+    "confidence": 0.88,
+    "research_date": "2026-03-18"
+  },
+  "Heritage Park": {
+    "closest_caltrain": "Sunnyvale",
+    "walking_distance": "0.7 mi",
+    "walk_time": "13 min",
+    "walk_time_basis": "Listed walking time/distance from Apartments.com commuter rail listing",
+    "washer": "No in-unit washer/dryer",
+    "washer_notes": "Official amenities list Laundry Facilities as a community amenity, and Apartments.com FAQ says Heritage Park does not provide in-unit laundry and has on-site laundry facilities for shared resident use.",
+    "official_website": "https://www.liveatheritageparkapts.com/amenities",
+    "source_urls": [
+      "https://www.liveatheritageparkapts.com/amenities",
+      "https://www.apartments.com/heritage-park-sunnyvale-ca/h2ctem3/"
+    ],
+    "evidence_summary": "Official site confirms proximity to Sunnyvale Caltrain and lists community laundry facilities. Apartments.com specifies a 13-minute, 0.7-mile walk and states there is no in-unit laundry.",
+    "confidence": 0.95,
+    "research_date": "2026-03-18"
+  },
+  "Ironworks": {
+    "closest_caltrain": "Sunnyvale",
+    "walking_distance": "0.4 mi",
+    "walk_time": "8 min",
+    "walk_time_basis": "Listed walking time/distance from Apartments.com transportation section",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Apartments.com lists Washer/Dryer in unit features for Ironworks.",
+    "official_website": "https://prometheusapartments.com/ca/sunnyvale-apartments/ironworks",
+    "source_urls": [
+      "https://prometheusapartments.com/ca/sunnyvale-apartments/ironworks",
+      "https://www.apartments.com/ironworks-sunnyvale-ca/pqr7qwv/",
+      "https://www.apartments.com/transit/ca/sunnyvale/sunnyvale-caltrain-station-southbound/tptz9t8/"
+    ],
+    "evidence_summary": "Apartments.com shows Sunnyvale Caltrain at a 0.4-mile, 8-minute walk and confirms in-unit washer/dryer. The Sunnyvale station transit listings also show Ironworks with live 2-bedroom inventory.",
+    "confidence": 0.95,
     "research_date": "2026-03-18"
   },
   "Landsby": {
@@ -121,45 +96,6 @@
     "evidence_summary": "Official site says Landsby is a short walk to San Antonio Caltrain; Apartments.com lists San Antonio at 0.2 mi / 4 min walk and confirms in-unit laundry.",
     "confidence": 0.97,
     "research_date": "2026-03-18"
-  },
-  "Verve": {
-    "closest_caltrain": "San Antonio",
-    "walking_distance": "0.66 mi",
-    "walk_time": "13 min",
-    "walk_time_basis": "Estimated from listed distance at 20 min/mile because no explicit walking time was published",
-    "washer": "In-unit washer/dryer",
-    "washer_notes": "Official UDR amenities page says in-home washer/dryer; Apartments.com and ApartmentHomeLiving also list in-unit Washer/Dryer.",
-    "official_website": "https://www.udr.com/san-francisco-bay-area-apartments/mountain-view/verve/amenities/",
-    "source_urls": [
-      "https://www.udr.com/san-francisco-bay-area-apartments/mountain-view/verve/neighborhood/",
-      "https://www.apartments.com/verve-mountain-view-ca/dfw92yk/",
-      "https://www.apartmenthomeliving.com/apartment-finder/Verve-Mountain-View-CA-94040-3051240",
-      "https://www.caltrain.com/station/sanantonio"
-    ],
-    "evidence_summary": "Official UDR pages say Verve has an in-home washer/dryer. ApartmentHomeLiving lists San Antonio Caltrain as the closest stop at 0.66 mi.",
-    "confidence": 0.79,
-    "research_date": "2026-03-18"
-  },
-  "The Shadows Apartments": {
-    "closest_caltrain": "Mountain View",
-    "walking_distance": "1.0 mi",
-    "walk_time": "18 min",
-    "walk_time_basis": "Reported walking time from property transit listing",
-    "washer": "In-unit washer/dryer",
-    "washer_notes": "Official site and Apartments.com both list in-unit washer/dryer; Apartments.com also lists shared laundry facilities in the community.",
-    "official_website": "https://www.shadowsapartments.com/",
-    "source_urls": [
-      "https://www.shadowsapartments.com/",
-      "https://www.apartments.com/the-shadows-apartments-mountain-view-ca/ysm3jjr/",
-      "https://www.loopnet.com/property/750-n-shoreline-blvd-mountain-view-ca-94043/06085-15031038/",
-      "https://www.caltrain.com/station/mountainview"
-    ],
-    "evidence_summary": "Official site and Apartments.com identify The Shadows at 750 N Shoreline Blvd and both list in-unit washer/dryer. LoopNet shows Mountain View Caltrain at 1.0 mi / 18 min walk.",
-    "confidence": 0.87,
-    "research_date": "2026-03-18",
-    "corrected_address": "750 N Shoreline Blvd, Mountain View, CA 94043",
-    "latitude": 37.4050688,
-    "longitude": -122.0782316
   },
   "MV Apartments": {
     "closest_caltrain": "San Antonio",
@@ -197,56 +133,39 @@
     "latitude": 37.3960388,
     "longitude": -122.0942791
   },
-  "Hartwood": {
-    "closest_caltrain": "Lawrence",
-    "walking_distance": "0.1 mi",
-    "walk_time": "1 min",
-    "walk_time_basis": "Listed walking time from Apartments.com",
+  "Montage Apartments": {
+    "closest_caltrain": "California Ave",
+    "walking_distance": "0.8 mi",
+    "walk_time": "15 min",
+    "walk_time_basis": "Listed walking time/distance from third-party map result",
     "washer": "In-unit washer/dryer",
-    "washer_notes": "Apartments.com lists Washer/Dryer in apartment features and says Hartwood has units with in-unit washers and dryers; the official site does not mention laundry.",
-    "official_website": "https://www.hartwoodsunnyvale.com/",
+    "washer_notes": "Official site says in-home washer/dryers and washer/dryer in every home; Apartments.com also lists Washer/Dryer.",
+    "official_website": "https://montagebayarea.com/",
     "source_urls": [
-      "https://www.hartwoodsunnyvale.com/neighborhood/",
-      "https://www.apartments.com/hartwood-sunnyvale-ca/nzqhytq/"
+      "https://montagebayarea.com/",
+      "https://www.apartments.com/montage-apartments-palo-alto-ca/fqckbxs/",
+      "https://moovitapp.com/index/en/public_transit-El_Camino_Real_Palo_Alto_CA-SF_Bay_Area_CA-site_254528058-22",
+      "https://www.loopnet.com/property/el-camino-real-palo-alto-ca-94306/06085-14220079/"
     ],
-    "evidence_summary": "Hartwood\u2019s official site says it is steps from Lawrence Station. Apartments.com lists Lawrence Caltrain at 0.1 mi / 1 min walk and confirms in-unit washer/dryer.",
-    "confidence": 0.88,
+    "evidence_summary": "Official site and Apartments.com both confirm in-unit washer/dryer. California Ave is the nearest Caltrain stop; LoopNet listed it at 0.8 mi / 15 min walk.",
+    "confidence": 0.77,
     "research_date": "2026-03-18"
   },
-  "Savoy": {
-    "closest_caltrain": "Lawrence",
-    "walking_distance": "0.6 mi",
-    "walk_time": "12 min",
-    "walk_time_basis": "Listed walking time on Apartments.com",
+  "Montrose": {
+    "closest_caltrain": "Mountain View",
+    "walking_distance": "1.8 mi",
+    "walk_time": "36 min",
+    "walk_time_basis": "Estimated from routed walking distance to Mountain View Caltrain using a map routing tool at 20 min/mile because the listing only exposed drive distance to Caltrain",
     "washer": "In-unit washer/dryer",
-    "washer_notes": "Apartments.com lists Washer/Dryer under apartment features. The official site does not explicitly mention laundry, but nothing suggests shared-only laundry.",
-    "official_website": "https://liveatsavoy.com/",
+    "washer_notes": "Apartments.com lists Washer/Dryer in apartment features for Montrose.",
+    "official_website": "https://prometheusapartments.com/ca/mountain-view-apartments/montrose",
     "source_urls": [
-      "https://liveatsavoy.com/",
-      "https://liveatsavoy.com/amenities/",
-      "https://www.apartments.com/savoy-sunnyvale-ca/wz9c7ck/"
+      "https://prometheusapartments.com/ca/mountain-view-apartments/montrose",
+      "https://www.apartments.com/montrose-mountain-view-ca/8875n40/",
+      "https://www.apartmenthomeliving.com/mountain-view-ca/san-antonio/apartments-for-rent/2-bedroom"
     ],
-    "evidence_summary": "Official site says Savoy is made accessible by Lawrence Station Caltrain and lists the property at 1120 Kifer Road. Apartments.com lists Lawrence at 0.6 mi / 12 min walk and shows washer/dryer in apartment features.",
-    "confidence": 0.88,
-    "research_date": "2026-03-18",
-    "corrected_address": "1120 Kifer Rd, Sunnyvale, CA",
-    "latitude": 37.3732914,
-    "longitude": -121.9998913
-  },
-  "Encasa": {
-    "closest_caltrain": "Lawrence",
-    "walking_distance": "3.0 mi",
-    "walk_time": "60 min",
-    "walk_time_basis": "Estimated from listed walking distance at 20 min/mile",
-    "washer": "In-unit washer/dryer",
-    "washer_notes": "Official site lists In Unit Washer & Dryer - Stackable; Apartments.com also lists in-unit washer/dryer.",
-    "official_website": "https://www.encasaliving.com/Contact.aspx",
-    "source_urls": [
-      "https://www.encasaliving.com/Contact.aspx",
-      "https://www.apartments.com/es/encasa-sunnyvale-ca/s1ktnb6/"
-    ],
-    "evidence_summary": "Encasa\u2019s official site lists an in-unit stackable washer/dryer. Apartments.com shows Lawrence as the closest Caltrain stop at 3.0 mi, so the walk time was estimated.",
-    "confidence": 0.84,
+    "evidence_summary": "Apartments.com confirms in-unit washer/dryer. Because the page only exposed drive-distance Caltrain info, the walk metric was estimated from a routed walking path to Mountain View Caltrain.",
+    "confidence": 0.83,
     "research_date": "2026-03-18"
   },
   "Naya": {
@@ -287,6 +206,151 @@
     "confidence": 0.89,
     "research_date": "2026-03-18"
   },
+  "Rowe at Pear Village": {
+    "closest_caltrain": "Mountain View",
+    "walking_distance": "1.13 mi",
+    "walk_time": "23 min",
+    "walk_time_basis": "Estimated from the listed 1.13 mi distance at 20 min/mile",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Official site says Whirlpool front-load washer and dryer in unit; Apartments.com and Zillow also list in-unit laundry.",
+    "official_website": "https://rowepearvillage.com/amenities/",
+    "source_urls": [
+      "https://rowepearvillage.com/amenities/",
+      "https://www.apartments.com/rowe-at-pear-village-mountain-view-ca/7fyfd6x/",
+      "https://www.apartmenthomeliving.com/apartment-finder/Rowe-at-Pear-Village-Mountain-View-CA-94043-19859551",
+      "https://www.caltrain.com/station/mountainview"
+    ],
+    "evidence_summary": "Official amenities page lists in-unit washer/dryer. ApartmentHomeLiving lists Mountain View Caltrain at 1.13 mi; no direct walking route was exposed, so time was estimated.",
+    "confidence": 0.79,
+    "research_date": "2026-03-18"
+  },
+  "Savoy": {
+    "closest_caltrain": "Lawrence",
+    "walking_distance": "0.6 mi",
+    "walk_time": "12 min",
+    "walk_time_basis": "Listed walking time on Apartments.com",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Apartments.com lists Washer/Dryer under apartment features. The official site does not explicitly mention laundry, but nothing suggests shared-only laundry.",
+    "official_website": "https://liveatsavoy.com/",
+    "source_urls": [
+      "https://liveatsavoy.com/",
+      "https://liveatsavoy.com/amenities/",
+      "https://www.apartments.com/savoy-sunnyvale-ca/wz9c7ck/"
+    ],
+    "evidence_summary": "Official site says Savoy is made accessible by Lawrence Station Caltrain and lists the property at 1120 Kifer Road. Apartments.com lists Lawrence at 0.6 mi / 12 min walk and shows washer/dryer in apartment features.",
+    "confidence": 0.88,
+    "research_date": "2026-03-18",
+    "corrected_address": "1120 Kifer Rd, Sunnyvale, CA",
+    "latitude": 37.3732914,
+    "longitude": -121.9998913
+  },
+  "Sevens": {
+    "closest_caltrain": "Mountain View",
+    "walking_distance": "~0.75 mi",
+    "walk_time": "15 min",
+    "walk_time_basis": "Official site lists a 15-minute walk; distance back-calculated at 20 min/mile",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Official amenities page lists In-Unit Washer and Dryer; Apartments.com and Zillow also list in-unit washer/dryer.",
+    "official_website": "https://sevensmv.com/",
+    "source_urls": [
+      "https://sevensmv.com/amenities/",
+      "https://sevensmv.com/p/transportation/",
+      "https://www.apartments.com/sevens-mountain-view-ca/3rr7vmg/",
+      "https://www.zillow.com/apartments/mountain-view-ca/sevens/9VG5jp/"
+    ],
+    "evidence_summary": "Official site states Mountain View Caltrain Station is a 15-minute walk from Sevens and lists in-unit washer/dryer.",
+    "confidence": 0.91,
+    "research_date": "2026-03-18"
+  },
+  "Southwood Apartments": {
+    "closest_caltrain": "California Ave",
+    "walking_distance": "1.3 mi",
+    "walk_time": "26 min",
+    "walk_time_basis": "Estimated from walking distance at 20 min/mile using map/search distance",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Official site says homes feature in-home washers and dryers, and Apartments.com also lists Washer/Dryer in apartment features.",
+    "official_website": "https://www.southwood-apartments.com/",
+    "source_urls": [
+      "https://www.southwood-apartments.com/",
+      "https://www.southwood-apartments.com/floorplans/one-bedroom-one-bathroom",
+      "https://www.apartments.com/southwood-apartments-palo-alto-ca/6f8zpmt/",
+      "https://www.rome2rio.com/s/Palo-Alto/California-Ave-Caltrain-Station",
+      "https://www.walkscore.com/score/middlefield-rd-and-colorado-ave-palo-alto-ca-94306"
+    ],
+    "evidence_summary": "Official site confirms in-home washer/dryer. Listing sites did not provide a walk route, so the California Ave walk time was estimated from map/search distance.",
+    "confidence": 0.74,
+    "research_date": "2026-03-18"
+  },
+  "Stanford Villa": {
+    "closest_caltrain": "California Ave",
+    "walking_distance": "1.5 mi",
+    "walk_time": "30 min",
+    "walk_time_basis": "Estimated from walking distance at 20 min/mile",
+    "washer": "No in-unit washer/dryer",
+    "washer_notes": "No in-unit laundry; official site lists on-site laundry facilities (card-operated), and Apartments.com says on-site laundry is shared resident use.",
+    "official_website": "https://www.stanfordvilla.com/apartments/ca/palo-alto/amenities",
+    "source_urls": [
+      "https://rde.stanford.edu/studenthousing/stanford-villa-apartments",
+      "https://www.apartments.com/stanford-villa-palo-alto-ca/5ezwzbq/",
+      "https://www.loopnet.com/property/3375-alma-st-palo-alto-ca-94306/06085-13228075/"
+    ],
+    "evidence_summary": "Official sources confirm on-site shared laundry rather than in-unit laundry. California Ave is the closest Caltrain stop; LoopNet showed 1.5 mi and Apartments.com showed 1.8 mi, so 1.5 mi was used.",
+    "confidence": 0.89,
+    "research_date": "2026-03-18"
+  },
+  "The Dean": {
+    "closest_caltrain": "San Antonio",
+    "walking_distance": "0.5 mi",
+    "walk_time": "9 min",
+    "walk_time_basis": "Listed walking time/distance from Apartments.com transportation section",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Apartments.com lists Washer/Dryer in apartment features, and the official community markets in-home laundry among its residential finishes.",
+    "official_website": "https://prometheusapartments.com/ca/mountain-view-apartments/the-dean",
+    "source_urls": [
+      "https://prometheusapartments.com/ca/mountain-view-apartments/the-dean",
+      "https://www.apartments.com/dean-mountain-view-ca/3yxd35f/",
+      "https://www.apartmenthomeliving.com/mountain-view-ca/apartments-for-rent/2-bedroom"
+    ],
+    "evidence_summary": "Apartments.com shows San Antonio Caltrain as a 0.5-mile, 9-minute walk and lists Washer/Dryer in unit features. Prometheus is the official site of record.",
+    "confidence": 0.95,
+    "research_date": "2026-03-18"
+  },
+  "The Flats at Cityline": {
+    "closest_caltrain": "Sunnyvale",
+    "walking_distance": "0.2 mi",
+    "walk_time": "5 min",
+    "walk_time_basis": "Official Cityline site lists Sunnyvale Station at 0.2 miles / 5 minutes",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Cityline and Apartments.com both describe an in-home full-size stacked washer and dryer.",
+    "official_website": "https://citylineflats.com/",
+    "source_urls": [
+      "https://citylineflats.com/",
+      "https://citylineflats.com/amenities/",
+      "https://www.apartments.com/the-flats-at-cityline-sunnyvale-ca/0cdemn2/",
+      "https://www.redfin.com/neighborhood/119104/CA/Sunnyvale/Heritage-District/2-bedroom-rentals"
+    ],
+    "evidence_summary": "Cityline lists Sunnyvale Station at 0.2 miles / 5 minutes and its amenities page lists an in-home full-size washer and dryer. Apartments.com confirms Washer/Dryer in unit features.",
+    "confidence": 0.96,
+    "research_date": "2026-03-18"
+  },
+  "The Martin": {
+    "closest_caltrain": "Sunnyvale",
+    "walking_distance": "0.4 mi",
+    "walk_time": "7 min",
+    "walk_time_basis": "Listed walking time/distance from Apartments.com transportation section",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Apartments.com says washers and dryers are in every home.",
+    "official_website": "https://livethemartin.com/",
+    "source_urls": [
+      "https://livethemartin.com/",
+      "https://www.apartments.com/the-martin-sunnyvale-ca/l9flwcd/",
+      "https://www.redfin.com/neighborhood/119104/CA/Sunnyvale/Heritage-District/2-bedroom-rentals",
+      "https://www.apartmenthomeliving.com/apartment-finder/The-Martin-Sunnyvale-CA-94086-19080754"
+    ],
+    "evidence_summary": "Apartments.com shows Sunnyvale Caltrain as a 0.4-mile, 7-minute walk and lists washers and dryers in every home. Redfin and ApartmentHomeLiving both showed current 2-bedroom availability.",
+    "confidence": 0.9,
+    "research_date": "2026-03-18"
+  },
   "The Meadows Apartments": {
     "closest_caltrain": "Sunnyvale",
     "walking_distance": "1.5 mi",
@@ -310,20 +374,77 @@
     "latitude": 37.38851,
     "longitude": -122.044975
   },
-  "Heritage Park": {
+  "The Montclaire Apartments": {
     "closest_caltrain": "Sunnyvale",
-    "walking_distance": "0.7 mi",
-    "walk_time": "13 min",
-    "walk_time_basis": "Listed walking time/distance from Apartments.com commuter rail listing",
-    "washer": "No in-unit washer/dryer",
-    "washer_notes": "Official amenities list Laundry Facilities as a community amenity, and Apartments.com FAQ says Heritage Park does not provide in-unit laundry and has on-site laundry facilities for shared resident use.",
-    "official_website": "https://www.liveatheritageparkapts.com/amenities",
+    "walking_distance": "1.1 mi",
+    "walk_time": "22 min",
+    "walk_time_basis": "Estimated from routed walking distance to Sunnyvale Caltrain using a map routing tool because Apartments.com only exposed drive distance to Caltrain",
+    "washer": "In-unit washer/dryer in select homes",
+    "washer_notes": "Essex states select homes feature an in-home washer and dryer; Apartments.com repeats the same select-home language.",
+    "official_website": "https://www.essexapartmenthomes.com/apartments/sunnyvale/the-montclaire",
     "source_urls": [
-      "https://www.liveatheritageparkapts.com/amenities",
-      "https://www.apartments.com/heritage-park-sunnyvale-ca/h2ctem3/"
+      "https://www.essexapartmenthomes.com/apartments/sunnyvale/the-montclaire",
+      "https://www.apartments.com/the-montclaire-sunnyvale-ca/x4m85qp/",
+      "https://www.apartments.com/downtown-sunnyvale-sunnyvale-ca/washer-dryer/"
     ],
-    "evidence_summary": "Official site confirms proximity to Sunnyvale Caltrain and lists community laundry facilities. Apartments.com specifies a 13-minute, 0.7-mile walk and states there is no in-unit laundry.",
-    "confidence": 0.95,
+    "evidence_summary": "Essex markets The Montclaire as less than one mile from Sunnyvale Caltrain and says select homes include in-home washer/dryer. Apartments.com shows current 2-bedroom pricing and repeats the select-home laundry language.",
+    "confidence": 0.84,
+    "research_date": "2026-03-18"
+  },
+  "The Shadows Apartments": {
+    "closest_caltrain": "Mountain View",
+    "walking_distance": "1.0 mi",
+    "walk_time": "18 min",
+    "walk_time_basis": "Reported walking time from property transit listing",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Official site and Apartments.com both list in-unit washer/dryer; Apartments.com also lists shared laundry facilities in the community.",
+    "official_website": "https://www.shadowsapartments.com/",
+    "source_urls": [
+      "https://www.shadowsapartments.com/",
+      "https://www.apartments.com/the-shadows-apartments-mountain-view-ca/ysm3jjr/",
+      "https://www.loopnet.com/property/750-n-shoreline-blvd-mountain-view-ca-94043/06085-15031038/",
+      "https://www.caltrain.com/station/mountainview"
+    ],
+    "evidence_summary": "Official site and Apartments.com identify The Shadows at 750 N Shoreline Blvd and both list in-unit washer/dryer. LoopNet shows Mountain View Caltrain at 1.0 mi / 18 min walk.",
+    "confidence": 0.87,
+    "research_date": "2026-03-18",
+    "corrected_address": "750 N Shoreline Blvd, Mountain View, CA 94043",
+    "latitude": 37.4050688,
+    "longitude": -122.0782316
+  },
+  "The Tillery": {
+    "closest_caltrain": "Mountain View",
+    "walking_distance": "1.0 mi",
+    "walk_time": "19 min",
+    "walk_time_basis": "Listed walking time/distance from Apartments.com transportation section",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Apartments.com lists stackable Washer & Dryer as a unique feature.",
+    "official_website": "https://prometheusapartments.com/ca/mountain-view-apartments/the-tillery",
+    "source_urls": [
+      "https://prometheusapartments.com/ca/mountain-view-apartments/the-tillery",
+      "https://www.apartments.com/the-tillery-mountain-view-ca/yr0kvys/",
+      "https://www.apartmenthomeliving.com/mountain-view-ca/apartments-for-rent/2-bedroom"
+    ],
+    "evidence_summary": "Apartments.com shows Mountain View Caltrain as a 1.0-mile, 19-minute walk and identifies stackable Washer & Dryer as a unit feature.",
+    "confidence": 0.94,
+    "research_date": "2026-03-18"
+  },
+  "Verve": {
+    "closest_caltrain": "San Antonio",
+    "walking_distance": "0.66 mi",
+    "walk_time": "13 min",
+    "walk_time_basis": "Estimated from listed distance at 20 min/mile because no explicit walking time was published",
+    "washer": "In-unit washer/dryer",
+    "washer_notes": "Official UDR amenities page says in-home washer/dryer; Apartments.com and ApartmentHomeLiving also list in-unit Washer/Dryer.",
+    "official_website": "https://www.udr.com/san-francisco-bay-area-apartments/mountain-view/verve/amenities/",
+    "source_urls": [
+      "https://www.udr.com/san-francisco-bay-area-apartments/mountain-view/verve/neighborhood/",
+      "https://www.apartments.com/verve-mountain-view-ca/dfw92yk/",
+      "https://www.apartmenthomeliving.com/apartment-finder/Verve-Mountain-View-CA-94040-3051240",
+      "https://www.caltrain.com/station/sanantonio"
+    ],
+    "evidence_summary": "Official UDR pages say Verve has an in-home washer/dryer. ApartmentHomeLiving lists San Antonio Caltrain as the closest stop at 0.66 mi.",
+    "confidence": 0.79,
     "research_date": "2026-03-18"
   }
 }
