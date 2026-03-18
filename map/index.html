@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>South Bay Apartment Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">South Bay 2B2B Search</p>
+          <h1>Available 2B/2B Apartment Map</h1>
+          <p class="hero-copy">
+            Filtered to apartments with live 2 bed / 2 bath availability from
+            March 17, 2026 through April 10, 2026. Hover a pin to preview the
+            latest research, then click to pin the details.
+          </p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-label">Eligible</span>
+            <strong id="candidate-count">18</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Visible</span>
+            <strong id="visible-count">18</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Window Ends</span>
+            <strong>Apr 10, 2026</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Researched</span>
+            <strong id="research-date">Mar 17, 2026</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="controls">
+        <div class="chip-group" id="city-filters" aria-label="City filters"></div>
+      </section>
+
+      <section class="map-layout">
+        <div class="map-frame">
+          <div id="map" aria-label="Apartment map"></div>
+          <div class="map-note">
+            Only currently eligible 2B/2B listings are shown. Transit fields came
+            from the shortlist and should get one final check before tours.
+          </div>
+        </div>
+
+        <aside class="info-panel" id="info-panel">
+          <div class="panel-empty" id="panel-empty">
+            <p class="panel-kicker">Apartment Preview</p>
+            <h2>Hover a marker</h2>
+            <p>
+              The card shows live rent, availability timing, floorplan notes,
+              transit, specials, and links back to the source pages.
+            </p>
+          </div>
+
+          <article class="panel-card hidden" id="panel-card">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker" id="panel-city">City</p>
+                <h2 id="panel-name">Apartment</h2>
+              </div>
+              <span class="panel-pill" id="panel-price">Rent</span>
+            </div>
+
+            <div class="badge-row">
+              <span class="panel-badge panel-badge-accent" id="panel-availability">
+                Available now
+              </span>
+              <span class="panel-badge" id="panel-research-badge">
+                Verified Mar 17, 2026
+              </span>
+            </div>
+
+            <p class="panel-address" id="panel-address"></p>
+
+            <div class="detail-grid">
+              <div class="detail-box">
+                <span class="detail-label">Sq Ft</span>
+                <strong id="panel-sqft"></strong>
+              </div>
+              <div class="detail-box">
+                <span class="detail-label">Beds / Baths</span>
+                <strong id="panel-beds-baths"></strong>
+              </div>
+              <div class="detail-box">
+                <span class="detail-label">Closest Caltrain</span>
+                <strong id="panel-caltrain"></strong>
+              </div>
+              <div class="detail-box">
+                <span class="detail-label">Distance</span>
+                <strong id="panel-distance"></strong>
+              </div>
+              <div class="detail-box">
+                <span class="detail-label">Walk Time</span>
+                <strong id="panel-walk"></strong>
+              </div>
+              <div class="detail-box">
+                <span class="detail-label">Primary Source</span>
+                <strong id="panel-primary-source"></strong>
+              </div>
+            </div>
+
+            <div class="review-strip">
+              <span class="review-label">Review</span>
+              <strong id="panel-review"></strong>
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-row">
+                <span class="detail-label">Price Basis</span>
+                <strong id="panel-price-basis"></strong>
+              </div>
+              <div class="meta-row">
+                <span class="detail-label">Deposit</span>
+                <strong id="panel-deposit"></strong>
+              </div>
+              <div class="meta-row">
+                <span class="detail-label">Lease Terms</span>
+                <strong id="panel-lease-terms"></strong>
+              </div>
+            </div>
+
+            <section class="panel-section hidden" id="panel-floorplan-section">
+              <p class="detail-label">Floorplan / Unit</p>
+              <p id="panel-floorplan"></p>
+            </section>
+
+            <section class="panel-section hidden" id="panel-specials-section">
+              <p class="detail-label">Specials</p>
+              <p id="panel-specials"></p>
+            </section>
+
+            <section class="panel-section hidden" id="panel-notes-section">
+              <p class="detail-label">Research Notes</p>
+              <p id="panel-notes"></p>
+            </section>
+
+            <div class="panel-actions">
+              <a
+                class="primary-link"
+                id="panel-primary-link"
+                href="#"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open Official Site
+              </a>
+              <a
+                class="ghost-link hidden"
+                id="panel-secondary-link"
+                href="#"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open Listing Source
+              </a>
+              <button class="ghost-button" id="clear-selection-button" type="button">
+                Clear Selection
+              </button>
+            </div>
+          </article>
+        </aside>
+      </section>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="./apartments-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

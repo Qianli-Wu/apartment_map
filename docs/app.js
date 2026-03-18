@@ -1,0 +1,458 @@
+const MAP_CACHE_KEY = "south-bay-apartment-map-v3";
+const GEOCODE_DELAY_MS = 1100;
+const DEFAULT_CENTER = [37.3947, -122.0862];
+const DEFAULT_ZOOM = 11;
+
+const state = {
+  selectedCity: "All",
+  selectedApartmentId: null,
+  markers: new Map(),
+  geocodeCache: loadCache()
+};
+
+const map = L.map("map", {
+  zoomControl: true,
+  minZoom: 10
+}).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap contributors"
+}).addTo(map);
+
+const markerLayer = L.layerGroup().addTo(map);
+
+const candidateCountEl = document.getElementById("candidate-count");
+const visibleCountEl = document.getElementById("visible-count");
+const researchDateEl = document.getElementById("research-date");
+const cityFiltersEl = document.getElementById("city-filters");
+const clearSelectionButton = document.getElementById("clear-selection-button");
+const panelEmptyEl = document.getElementById("panel-empty");
+const panelCardEl = document.getElementById("panel-card");
+
+initialize();
+
+function initialize() {
+  injectIds();
+  candidateCountEl.textContent = String(APARTMENTS.length);
+  researchDateEl.textContent = getLatestResearchDate();
+  renderCityFilters();
+  renderMarkersFromCache();
+  updateCounters();
+  geocodeMissingApartments();
+
+  clearSelectionButton.addEventListener("click", () => {
+    state.selectedApartmentId = null;
+    refreshMarkerStyles();
+    renderPanel();
+  });
+}
+
+function injectIds() {
+  APARTMENTS.forEach((apartment, index) => {
+    apartment.id = `${apartment.city.toLowerCase().replace(/\s+/g, "-")}-${index}`;
+    if (
+      typeof apartment.latitude === "number" &&
+      typeof apartment.longitude === "number"
+    ) {
+      state.geocodeCache[apartment.address] = {
+        lat: apartment.latitude,
+        lon: apartment.longitude,
+        source: "embedded"
+      };
+    }
+  });
+
+  saveCache(state.geocodeCache);
+}
+
+function renderCityFilters() {
+  const cities = ["All", ...new Set(APARTMENTS.map((item) => item.city))];
+  cityFiltersEl.innerHTML = "";
+
+  cities.forEach((city) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `chip${state.selectedCity === city ? " active" : ""}`;
+    button.textContent = city;
+    button.addEventListener("click", () => {
+      state.selectedCity = city;
+      clearSelectionIfHidden();
+      renderCityFilters();
+      renderMarkersFromCache();
+      renderPanel(getSelectedApartment());
+      fitVisibleBounds();
+      updateCounters();
+    });
+    cityFiltersEl.appendChild(button);
+  });
+}
+
+function renderMarkersFromCache() {
+  markerLayer.clearLayers();
+  state.markers.clear();
+
+  getVisibleApartments().forEach((apartment) => {
+    const coords = state.geocodeCache[apartment.address];
+    if (!coords) {
+      return;
+    }
+
+    const marker = buildMarker(apartment, coords);
+    marker.addTo(markerLayer);
+    state.markers.set(apartment.id, marker);
+  });
+
+  refreshMarkerStyles();
+  fitVisibleBounds();
+}
+
+function buildMarker(apartment, coords) {
+  const marker = L.marker([coords.lat, coords.lon], {
+    icon: buildIcon(apartment.city)
+  });
+
+  marker.bindTooltip(buildTooltipMarkup(apartment), {
+    direction: "top",
+    offset: [0, -28],
+    opacity: 1,
+    className: "apt-tooltip"
+  });
+
+  marker.on("mouseover", () => {
+    marker.openTooltip();
+    renderPanel(apartment);
+  });
+
+  marker.on("mouseout", () => {
+    marker.closeTooltip();
+
+    if (state.selectedApartmentId) {
+      renderPanel(getSelectedApartment());
+      return;
+    }
+
+    renderPanel(null);
+  });
+
+  marker.on("click", () => {
+    state.selectedApartmentId = apartment.id;
+    refreshMarkerStyles();
+    renderPanel(apartment);
+  });
+
+  return marker;
+}
+
+function buildTooltipMarkup(apartment) {
+  return `
+    <div class="tooltip-card">
+      <strong>${escapeHtml(apartment.apartment)}</strong>
+      <span>${escapeHtml(apartment.city)}</span>
+      <span>${escapeHtml(formatRent(apartment.listedRent))}</span>
+      <span>${escapeHtml(buildAvailabilityLabel(apartment.earliestAvailability))}</span>
+    </div>
+  `;
+}
+
+function buildIcon(city) {
+  const cityClass = city.toLowerCase().replace(/\s+/g, "-");
+  return L.divIcon({
+    className: "",
+    html: `<div class="apt-marker ${cityClass}"><span>🏢</span></div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 36]
+  });
+}
+
+async function geocodeMissingApartments() {
+  const missing = APARTMENTS.filter((apartment) => {
+    if (
+      typeof apartment.latitude === "number" &&
+      typeof apartment.longitude === "number"
+    ) {
+      return false;
+    }
+
+    return !state.geocodeCache[apartment.address];
+  });
+
+  for (const apartment of missing) {
+    try {
+      const result = await geocodeAddress(apartment.address);
+      if (result) {
+        state.geocodeCache[apartment.address] = result;
+        saveCache(state.geocodeCache);
+
+        if (matchesCityFilter(apartment)) {
+          const marker = buildMarker(apartment, result);
+          marker.addTo(markerLayer);
+          state.markers.set(apartment.id, marker);
+          refreshMarkerStyles();
+          fitVisibleBounds();
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to geocode ${apartment.address}`, error);
+    }
+
+    await delay(GEOCODE_DELAY_MS);
+  }
+}
+
+async function geocodeAddress(address) {
+  for (const candidate of buildAddressCandidates(address)) {
+    const url = new URL("https://nominatim.openstreetmap.org/search");
+    url.searchParams.set("format", "jsonv2");
+    url.searchParams.set("limit", "1");
+    url.searchParams.set("countrycodes", "us");
+    url.searchParams.set("q", candidate);
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Geocoder returned ${response.status}`);
+    }
+
+    const results = await response.json();
+    if (!results.length) {
+      continue;
+    }
+
+    return {
+      lat: Number(results[0].lat),
+      lon: Number(results[0].lon),
+      displayName: results[0].display_name,
+      query: candidate
+    };
+  }
+
+  return null;
+}
+
+function renderPanel(apartment) {
+  if (!apartment) {
+    panelEmptyEl.classList.remove("hidden");
+    panelCardEl.classList.add("hidden");
+    return;
+  }
+
+  panelEmptyEl.classList.add("hidden");
+  panelCardEl.classList.remove("hidden");
+
+  setText("panel-city", apartment.city);
+  setText("panel-name", apartment.apartment);
+  setText("panel-price", formatRent(apartment.listedRent));
+  setText("panel-availability", buildAvailabilityLabel(apartment.earliestAvailability));
+  setText("panel-research-badge", `Verified ${formatDate(apartment.researchDate)}`);
+  setText("panel-address", apartment.address);
+
+  setText("panel-sqft", apartment.sqFt || "not listed");
+  setText("panel-beds-baths", `${apartment.beds || "?"} bed / ${apartment.baths || "?"} bath`);
+  setText("panel-caltrain", apartment.closestCaltrain || "not yet verified");
+  setText("panel-distance", apartment.distance || "not yet verified");
+  setText("panel-walk", apartment.walkTime || "not yet verified");
+  setText("panel-review", apartment.review || "not yet verified");
+
+  setText("panel-price-basis", apartment.priceBasis || "not listed");
+  setText("panel-deposit", apartment.deposit || "not listed");
+  setText("panel-lease-terms", apartment.leaseTerms || "not listed");
+  setText("panel-primary-source", apartment.primarySource || "not listed");
+
+  toggleSection("panel-floorplan-section", "panel-floorplan", apartment.floorplanUnit);
+  toggleSection("panel-specials-section", "panel-specials", apartment.specials);
+  toggleSection("panel-notes-section", "panel-notes", apartment.notes);
+
+  configureLinks(apartment);
+}
+
+function configureLinks(apartment) {
+  const primaryLinkEl = document.getElementById("panel-primary-link");
+  const secondaryLinkEl = document.getElementById("panel-secondary-link");
+
+  const primaryHref = apartment.officialWebsite || apartment.listingSource || "#";
+  primaryLinkEl.href = primaryHref;
+  primaryLinkEl.textContent = apartment.officialWebsite ? "Open Official Site" : "Open Listing Source";
+
+  const shouldShowSecondary =
+    Boolean(apartment.officialWebsite) &&
+    Boolean(apartment.listingSource) &&
+    apartment.officialWebsite !== apartment.listingSource;
+
+  if (shouldShowSecondary) {
+    secondaryLinkEl.href = apartment.listingSource;
+    secondaryLinkEl.classList.remove("hidden");
+  } else {
+    secondaryLinkEl.href = "#";
+    secondaryLinkEl.classList.add("hidden");
+  }
+}
+
+function refreshMarkerStyles() {
+  state.markers.forEach((marker, apartmentId) => {
+    const element = marker.getElement();
+    if (!element) {
+      return;
+    }
+
+    const iconEl = element.querySelector(".apt-marker");
+    if (!iconEl) {
+      return;
+    }
+
+    iconEl.classList.toggle("selected", apartmentId === state.selectedApartmentId);
+  });
+}
+
+function fitVisibleBounds() {
+  const visibleMarkers = [...state.markers.values()];
+  if (!visibleMarkers.length) {
+    map.setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+    return;
+  }
+
+  const bounds = L.latLngBounds(visibleMarkers.map((marker) => marker.getLatLng()));
+  map.fitBounds(bounds.pad(0.18), {
+    maxZoom: 13
+  });
+}
+
+function updateCounters() {
+  visibleCountEl.textContent = String(getVisibleApartments().length);
+}
+
+function getVisibleApartments() {
+  return APARTMENTS.filter(matchesCityFilter);
+}
+
+function matchesCityFilter(apartment) {
+  return state.selectedCity === "All" || apartment.city === state.selectedCity;
+}
+
+function clearSelectionIfHidden() {
+  const selected = getSelectedApartment();
+  if (!selected || !matchesCityFilter(selected)) {
+    state.selectedApartmentId = null;
+  }
+}
+
+function getSelectedApartment() {
+  return APARTMENTS.find((item) => item.id === state.selectedApartmentId) || null;
+}
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (!el) {
+    return;
+  }
+
+  el.textContent = value || "not listed";
+}
+
+function toggleSection(sectionId, valueId, value) {
+  const sectionEl = document.getElementById(sectionId);
+  const valueEl = document.getElementById(valueId);
+  if (!sectionEl || !valueEl) {
+    return;
+  }
+
+  if (value) {
+    valueEl.textContent = value;
+    sectionEl.classList.remove("hidden");
+    return;
+  }
+
+  valueEl.textContent = "";
+  sectionEl.classList.add("hidden");
+}
+
+function buildAvailabilityLabel(value) {
+  if (!value || value === "Now") {
+    return "Available now";
+  }
+
+  return `Available ${formatDate(value)}`;
+}
+
+function formatRent(value) {
+  if (!value) {
+    return "not yet verified";
+  }
+
+  if (String(value).includes("$") || /call for rent/i.test(String(value))) {
+    return String(value);
+  }
+
+  return `$${value}`;
+}
+
+function formatDate(value) {
+  if (!value || value === "Now") {
+    return value || "not listed";
+  }
+
+  const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    return String(value);
+  }
+
+  const date = new Date(`${match[1]}-${match[2]}-${match[3]}T12:00:00`);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  }).format(date);
+}
+
+function getLatestResearchDate() {
+  const dates = APARTMENTS.map((item) => item.researchDate).filter(Boolean).sort();
+  return dates.length ? formatDate(dates[dates.length - 1]) : "not listed";
+}
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(MAP_CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (error) {
+    console.warn("Failed to load geocode cache", error);
+    return {};
+  }
+}
+
+function saveCache(cache) {
+  localStorage.setItem(MAP_CACHE_KEY, JSON.stringify(cache));
+}
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+function buildAddressCandidates(address) {
+  const candidates = new Set([address]);
+
+  const normalizedRange = address.replace(/\b(\d+)-(\d+)\b/, "$1");
+  candidates.add(normalizedRange);
+
+  const normalizedRepeatedRange = address.replace(/\b(\d+)-\1\b/, "$1");
+  candidates.add(normalizedRepeatedRange);
+
+  const noZip = normalizedRange.replace(/,?\s+CA\s+\d{5}\b/, ", CA");
+  candidates.add(noZip);
+
+  return [...candidates].filter(Boolean);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
