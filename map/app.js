@@ -1,9 +1,10 @@
-const MAP_CACHE_KEY = "south-bay-apartment-map-v4";
+const MAP_CACHE_KEY = "south-bay-apartment-map-v5";
 const GEOCODE_DELAY_MS = 1100;
 const DEFAULT_CENTER = [37.3947, -122.0862];
 const DEFAULT_ZOOM = 11;
 
 const state = {
+  apartments: [],
   selectedCity: "All",
   selectedApartmentId: null,
   markers: new Map(),
@@ -30,26 +31,52 @@ const clearSelectionButton = document.getElementById("clear-selection-button");
 const panelEmptyEl = document.getElementById("panel-empty");
 const panelCardEl = document.getElementById("panel-card");
 
-initialize();
+void initialize();
 
-function initialize() {
-  injectIds();
-  candidateCountEl.textContent = String(APARTMENTS.length);
-  researchDateEl.textContent = getLatestResearchDate();
-  renderCityFilters();
-  renderMarkersFromCache();
-  updateCounters();
-  geocodeMissingApartments();
-
+async function initialize() {
   clearSelectionButton.addEventListener("click", () => {
     state.selectedApartmentId = null;
     refreshMarkerStyles();
     renderPanel();
   });
+
+  try {
+    state.apartments = await loadApartments();
+    injectIds();
+    candidateCountEl.textContent = String(state.apartments.length);
+    researchDateEl.textContent = getLatestResearchDate();
+    renderCityFilters();
+    renderMarkersFromCache();
+    updateCounters();
+    void geocodeMissingApartments();
+  } catch (error) {
+    console.error("Failed to initialize apartment map", error);
+    candidateCountEl.textContent = "0";
+    visibleCountEl.textContent = "0";
+    researchDateEl.textContent = "Unavailable";
+    renderLoadError();
+  }
+}
+
+async function loadApartments() {
+  const response = await fetch("./apartments-data.json", {
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to load apartment data: ${response.status}`);
+  }
+
+  const apartments = await response.json();
+  if (!Array.isArray(apartments)) {
+    throw new Error("Apartment dataset is not an array");
+  }
+
+  return apartments;
 }
 
 function injectIds() {
-  APARTMENTS.forEach((apartment, index) => {
+  state.apartments.forEach((apartment, index) => {
     apartment.id = `${apartment.city.toLowerCase().replace(/\s+/g, "-")}-${index}`;
     if (
       typeof apartment.latitude === "number" &&
@@ -67,7 +94,7 @@ function injectIds() {
 }
 
 function renderCityFilters() {
-  const cities = ["All", ...new Set(APARTMENTS.map((item) => item.city))];
+  const cities = ["All", ...new Set(state.apartments.map((item) => item.city))];
   cityFiltersEl.innerHTML = "";
 
   cities.forEach((city) => {
@@ -145,13 +172,17 @@ function buildMarker(apartment, coords) {
 }
 
 function buildTooltipMarkup(apartment) {
+  const transit = apartment.closestCaltrain && apartment.walkTime
+    ? `${apartment.closestCaltrain} • ${apartment.walkTime}`
+    : apartment.closestCaltrain || apartment.walkTime || "Transit not yet verified";
+
   return `
     <div class="tooltip-card">
       <strong>${escapeHtml(apartment.apartment)}</strong>
       <span>${escapeHtml(apartment.city)}</span>
       <span>${escapeHtml(formatRent(apartment.listedRent))}</span>
       <span>${escapeHtml(buildAvailabilityLabel(apartment.earliestAvailability))}</span>
-      <span>${escapeHtml(`${apartment.closestCaltrain} • ${apartment.walkTime}`)}</span>
+      <span>${escapeHtml(transit)}</span>
     </div>
   `;
 }
@@ -167,7 +198,7 @@ function buildIcon(city) {
 }
 
 async function geocodeMissingApartments() {
-  const missing = APARTMENTS.filter((apartment) => {
+  const missing = state.apartments.filter((apartment) => {
     if (
       typeof apartment.latitude === "number" &&
       typeof apartment.longitude === "number"
@@ -330,7 +361,7 @@ function updateCounters() {
 }
 
 function getVisibleApartments() {
-  return APARTMENTS.filter(matchesCityFilter);
+  return state.apartments.filter(matchesCityFilter);
 }
 
 function matchesCityFilter(apartment) {
@@ -345,7 +376,9 @@ function clearSelectionIfHidden() {
 }
 
 function getSelectedApartment() {
-  return APARTMENTS.find((item) => item.id === state.selectedApartmentId) || null;
+  return (
+    state.apartments.find((item) => item.id === state.selectedApartmentId) || null
+  );
 }
 
 function setText(id, value) {
@@ -413,7 +446,10 @@ function formatDate(value) {
 }
 
 function getLatestResearchDate() {
-  const dates = APARTMENTS.map((item) => item.researchDate).filter(Boolean).sort();
+  const dates = state.apartments
+    .map((item) => item.researchDate)
+    .filter(Boolean)
+    .sort();
   return dates.length ? formatDate(dates[dates.length - 1]) : "not listed";
 }
 
@@ -459,4 +495,17 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function renderLoadError() {
+  panelCardEl.classList.add("hidden");
+  panelEmptyEl.classList.remove("hidden");
+  panelEmptyEl.innerHTML = `
+    <p class="panel-kicker">Data Unavailable</p>
+    <h2>Could not load apartments</h2>
+    <p>
+      The site expects <code>apartments-data.json</code> generated from the latest CSV.
+      Run <code>python3 tools/sync_apartment_data.py</code> and reload the page.
+    </p>
+  `;
 }

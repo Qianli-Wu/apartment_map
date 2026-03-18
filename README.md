@@ -1,34 +1,39 @@
-# South Bay 2B2B Apartment Tracker
+# South Bay Apartment Map
 
-This workspace contains a Google-Sheets-ready apartment search tracker and a bound Apps Script implementation for the South Bay 2B2B rental search.
+This repo now uses one canonical CSV as the source of truth for the hosted apartment map:
 
-Files:
+- [apartment_research_latest.csv](/Users/qianli/Documents/New%20project/output/spreadsheet/apartment_research_latest.csv)
 
-- `output/spreadsheet/South_Bay_2B2B_Apartment_Search.xlsx`: workbook with `Controls`, `Seed Sources`, `Search Queue`, `Intake`, `Candidates`, `Audit Log`, and `Workbook Info`.
-- `google_apps_script/ApartmentTracker.gs`: bound Apps Script logic for queue sync, intake upsert, stale marking, and sorting.
-- `google_apps_script/SeedSouthBayTracker.gs`: one-run seeder for a live Google Sheet.
-- `google_apps_script/appsscript.json`: Apps Script manifest.
-- `data/initial_tracker_data.json`: seeded PDF and web verification data used to generate the workbook.
-- `tools/build_tracker_workbook.py`: workbook builder script.
+That CSV is converted into the JSON files used by the site:
 
-How to use:
+- [apartments-data.json](/Users/qianli/Documents/New%20project/docs/apartments-data.json)
+- [apartments-data.json](/Users/qianli/Documents/New%20project/map/apartments-data.json)
 
-1. Import `output/spreadsheet/South_Bay_2B2B_Apartment_Search.xlsx` into Google Sheets.
-2. Open Extensions > Apps Script in the Google Sheet.
-3. Paste in `google_apps_script/ApartmentTracker.gs`, `google_apps_script/SeedSouthBayTracker.gs`, and `google_apps_script/appsscript.json`.
-4. Reload the spreadsheet and use the `Apartment Tracker` menu.
-5. Run `seedSouthBayTracker()` once if you want this repository's seeded data written into the active Google Sheet.
-6. After that, update `Controls`, add new rows to `Seed Sources` or `Intake`, then run `Sync Seed Queue` or `Upsert Intake Rows`.
+## Sync flow
 
-Current seeded properties:
+1. Edit [apartment_research_latest.csv](/Users/qianli/Documents/New%20project/output/spreadsheet/apartment_research_latest.csv)
+2. Run:
 
-- Palo Alto Place
-- Sevens
-- Landsby
-- Sofi Sunnyvale
+```bash
+python3 "/Users/qianli/Documents/New project/tools/sync_apartment_data.py"
+```
 
-Notes:
+3. Commit and push
 
-- The workbook keeps the PDF seed claims and the re-verified web data separate.
-- `Palo Alto Place` is intentionally retained even though it currently misses the Caltrain walk threshold.
-- `Sofi Sunnyvale` is seeded as a watchlist row because the crawled official site confirmed 2-bedroom inventory but did not expose the live 2B price directly.
+The GitHub Pages site under `docs/` reads `apartments-data.json`, so the CSV is the only file you need to maintain manually.
+
+## Main files
+
+- [sync_apartment_data.py](/Users/qianli/Documents/New%20project/tools/sync_apartment_data.py): syncs the latest CSV into JSON for `docs/` and `map/`
+- [index.html](/Users/qianli/Documents/New%20project/docs/index.html): hosted page shell
+- [app.js](/Users/qianli/Documents/New%20project/docs/app.js): map UI logic
+- [styles.css](/Users/qianli/Documents/New%20project/docs/styles.css): styling
+
+## Local preview
+
+```bash
+cd "/Users/qianli/Documents/New project/map"
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
