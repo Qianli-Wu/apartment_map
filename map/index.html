@@ -27,7 +27,8 @@
           <p class="hero-copy">
             Filtered to apartments with live 2 bed / 2 bath availability from
             March 17, 2026 through April 10, 2026. Hover a pin to preview the
-            latest research, then click to pin the details.
+            latest research, including walk-to-Caltrain timing and in-unit
+            laundry status, then click to pin the details.
           </p>
         </div>
         <div class="hero-stats">
@@ -107,7 +108,7 @@
                 <strong id="panel-caltrain"></strong>
               </div>
               <div class="detail-box">
-                <span class="detail-label">Distance</span>
+                <span class="detail-label">Walking Distance</span>
                 <strong id="panel-distance"></strong>
               </div>
               <div class="detail-box">
@@ -115,8 +116,8 @@
                 <strong id="panel-walk"></strong>
               </div>
               <div class="detail-box">
-                <span class="detail-label">Primary Source</span>
-                <strong id="panel-primary-source"></strong>
+                <span class="detail-label">In-Unit Laundry</span>
+                <strong id="panel-washer"></strong>
               </div>
             </div>
 
@@ -138,11 +139,25 @@
                 <span class="detail-label">Lease Terms</span>
                 <strong id="panel-lease-terms"></strong>
               </div>
+              <div class="meta-row">
+                <span class="detail-label">Primary Source</span>
+                <strong id="panel-primary-source"></strong>
+              </div>
             </div>
 
             <section class="panel-section hidden" id="panel-floorplan-section">
               <p class="detail-label">Floorplan / Unit</p>
               <p id="panel-floorplan"></p>
+            </section>
+
+            <section class="panel-section hidden" id="panel-walk-basis-section">
+              <p class="detail-label">Walk Time Method</p>
+              <p id="panel-walk-basis"></p>
+            </section>
+
+            <section class="panel-section hidden" id="panel-washer-notes-section">
+              <p class="detail-label">Laundry Notes</p>
+              <p id="panel-washer-notes"></p>
             </section>
 
             <section class="panel-section hidden" id="panel-specials-section">

@@ -1,4 +1,4 @@
-const MAP_CACHE_KEY = "south-bay-apartment-map-v3";
+const MAP_CACHE_KEY = "south-bay-apartment-map-v4";
 const GEOCODE_DELAY_MS = 1100;
 const DEFAULT_CENTER = [37.3947, -122.0862];
 const DEFAULT_ZOOM = 11;
@@ -151,6 +151,7 @@ function buildTooltipMarkup(apartment) {
       <span>${escapeHtml(apartment.city)}</span>
       <span>${escapeHtml(formatRent(apartment.listedRent))}</span>
       <span>${escapeHtml(buildAvailabilityLabel(apartment.earliestAvailability))}</span>
+      <span>${escapeHtml(`${apartment.closestCaltrain} • ${apartment.walkTime}`)}</span>
     </div>
   `;
 }
@@ -256,6 +257,7 @@ function renderPanel(apartment) {
   setText("panel-caltrain", apartment.closestCaltrain || "not yet verified");
   setText("panel-distance", apartment.distance || "not yet verified");
   setText("panel-walk", apartment.walkTime || "not yet verified");
+  setText("panel-washer", apartment.washer || "not yet verified");
   setText("panel-review", apartment.review || "not yet verified");
 
   setText("panel-price-basis", apartment.priceBasis || "not listed");
@@ -264,6 +266,8 @@ function renderPanel(apartment) {
   setText("panel-primary-source", apartment.primarySource || "not listed");
 
   toggleSection("panel-floorplan-section", "panel-floorplan", apartment.floorplanUnit);
+  toggleSection("panel-walk-basis-section", "panel-walk-basis", apartment.walkTimeBasis);
+  toggleSection("panel-washer-notes-section", "panel-washer-notes", apartment.washerNotes);
   toggleSection("panel-specials-section", "panel-specials", apartment.specials);
   toggleSection("panel-notes-section", "panel-notes", apartment.notes);
 
