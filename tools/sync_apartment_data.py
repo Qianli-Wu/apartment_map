@@ -20,6 +20,8 @@ EXPECTED_COLUMNS = [
     "address",
     "latitude",
     "longitude",
+    "starred",
+    "tourDateTime",
     "earliestAvailability",
     "availableBy",
     "beds",
@@ -63,6 +65,13 @@ def normalize_float(value: str | None) -> float | None:
     return float(cleaned)
 
 
+def normalize_bool(value: str | None) -> bool:
+    cleaned = normalize_string(value)
+    if cleaned is None:
+        return False
+    return cleaned.lower() in {"true", "yes", "y", "1", "starred"}
+
+
 def normalize_urls(value: str | None) -> list[str]:
     cleaned = normalize_string(value)
     if cleaned is None:
@@ -89,6 +98,8 @@ def load_rows() -> list[dict[str, object]]:
                     "address": normalize_string(row["address"]),
                     "latitude": normalize_float(row["latitude"]),
                     "longitude": normalize_float(row["longitude"]),
+                    "starred": normalize_bool(row["starred"]),
+                    "tourDateTime": normalize_string(row["tourDateTime"]),
                     "earliestAvailability": normalize_string(row["earliestAvailability"]),
                     "availableBy": normalize_string(row["availableBy"]),
                     "beds": normalize_string(row["beds"]),

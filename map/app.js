@@ -72,6 +72,7 @@ async function loadApartments() {
     throw new Error("Apartment dataset is not an array");
   }
 
+  apartments.forEach(normalizeApartmentFlags);
   return apartments;
 }
 
@@ -136,7 +137,7 @@ function renderMarkersFromCache() {
 
 function buildMarker(apartment, coords) {
   const marker = L.marker([coords.lat, coords.lon], {
-    icon: buildIcon(apartment.city)
+    icon: buildIcon(apartment)
   });
 
   marker.bindTooltip(buildTooltipMarkup(apartment), {
@@ -175,6 +176,17 @@ function buildTooltipMarkup(apartment) {
   const transit = apartment.closestCaltrain && apartment.walkTime
     ? `${apartment.closestCaltrain} • ${apartment.walkTime}`
     : apartment.closestCaltrain || apartment.walkTime || "Transit not yet verified";
+  const flags = [];
+
+  if (apartment.starred) {
+    flags.push('<span class="tooltip-flag">Starred</span>');
+  }
+
+  if (apartment.tourDateTime) {
+    flags.push(
+      `<span class="tooltip-flag">Tour ${escapeHtml(formatDateTime(apartment.tourDateTime))}</span>`
+    );
+  }
 
   return `
     <div class="tooltip-card">
@@ -183,15 +195,29 @@ function buildTooltipMarkup(apartment) {
       <span>${escapeHtml(formatRent(apartment.listedRent))}</span>
       <span>${escapeHtml(buildAvailabilityLabel(apartment.earliestAvailability))}</span>
       <span>${escapeHtml(transit)}</span>
+      ${flags.join("")}
     </div>
   `;
 }
 
-function buildIcon(city) {
-  const cityClass = city.toLowerCase().replace(/\s+/g, "-");
+function buildIcon(apartment) {
+  const cityClass = apartment.city.toLowerCase().replace(/\s+/g, "-");
+  const classes = ["apt-marker", cityClass];
+  const badges = [];
+
+  if (apartment.starred) {
+    classes.push("starred");
+    badges.push('<span class="apt-marker-badge starred" aria-hidden="true">★</span>');
+  }
+
+  if (apartment.tourDateTime) {
+    classes.push("has-tour");
+    badges.push('<span class="apt-marker-badge tour" aria-hidden="true">T</span>');
+  }
+
   return L.divIcon({
     className: "",
-    html: `<div class="apt-marker ${cityClass}"><span>🏢</span></div>`,
+    html: `<div class="${classes.join(" ")}"><span>🏢</span>${badges.join("")}</div>`,
     iconSize: [36, 36],
     iconAnchor: [18, 36]
   });
@@ -289,6 +315,11 @@ function renderPanel(apartment) {
   setText("panel-distance", apartment.distance || "not yet verified");
   setText("panel-walk", apartment.walkTime || "not yet verified");
   setText("panel-washer", apartment.washer || "not yet verified");
+  setText("panel-starred", apartment.starred ? "Yes" : "No");
+  setText(
+    "panel-tour",
+    apartment.tourDateTime ? formatDateTime(apartment.tourDateTime) : "Not scheduled"
+  );
   setText("panel-review", apartment.review || "not yet verified");
 
   setText("panel-price-basis", apartment.priceBasis || "not listed");
@@ -445,6 +476,35 @@ function formatDate(value) {
   }).format(date);
 }
 
+function formatDateTime(value) {
+  if (!value) {
+    return "Not scheduled";
+  }
+
+  const raw = String(value).trim();
+  if (!raw) {
+    return "Not scheduled";
+  }
+
+  const normalized = raw.includes("T")
+    ? raw
+    : raw.match(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}/)
+      ? raw.replace(" ", "T")
+      : raw;
+
+  const date = new Date(normalized);
+  if (Number.isNaN(date.getTime())) {
+    return raw;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(date);
+}
+
 function getLatestResearchDate() {
   const dates = state.apartments
     .map((item) => item.researchDate)
@@ -508,4 +568,23 @@ function renderLoadError() {
       Run <code>python3 tools/sync_apartment_data.py</code> and reload the page.
     </p>
   `;
+}
+
+function normalizeApartmentFlags(apartment) {
+  apartment.starred = parseBoolean(apartment.starred);
+  apartment.tourDateTime = normalizeOptionalString(apartment.tourDateTime);
+}
+
+function parseBoolean(value) {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  const normalized = String(value || "").trim().toLowerCase();
+  return ["true", "yes", "y", "1", "starred"].includes(normalized);
+}
+
+function normalizeOptionalString(value) {
+  const normalized = String(value || "").trim();
+  return normalized || null;
 }

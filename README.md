@@ -12,6 +12,8 @@ That CSV is converted into the JSON files used by the site:
 ## Sync flow
 
 1. Edit [apartment_research_latest.csv](/Users/qianli/Documents/New%20project/output/spreadsheet/apartment_research_latest.csv)
+   Use `starred` with values like `TRUE`, `Yes`, or `1` to mark favorite apartments.
+   Use `tourDateTime` for scheduled tours, ideally in `YYYY-MM-DD HH:MM` format.
 2. Run:
 
 ```bash

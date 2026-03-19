@@ -14,6 +14,11 @@ Run this after editing the CSV:
 python3 "/Users/qianli/Documents/New project/tools/sync_apartment_data.py"
 ```
 
+Useful CSV columns:
+
+- `starred`: mark favorites with `TRUE`, `Yes`, or `1`
+- `tourDateTime`: scheduled tour time, preferably `YYYY-MM-DD HH:MM`
+
 ## Files
 
 - `index.html`: page shell

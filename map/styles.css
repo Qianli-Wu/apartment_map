@@ -9,6 +9,7 @@
   --teal: #167a72;
   --plum: #743f8c;
   --gold: #bf8a12;
+  --tour: #c53a2d;
   --shadow: 0 18px 40px rgba(22, 33, 62, 0.12);
 }
 
@@ -347,6 +348,7 @@ a {
 }
 
 .apt-marker {
+  position: relative;
   width: 36px;
   height: 36px;
   border-radius: 14px 14px 14px 4px;
@@ -372,6 +374,49 @@ a {
 
 .apt-marker.selected {
   transform: scale(1.08);
+}
+
+.apt-marker.starred {
+  box-shadow:
+    0 10px 18px rgba(22, 33, 62, 0.22),
+    0 0 0 3px rgba(191, 138, 18, 0.28);
+}
+
+.apt-marker.has-tour {
+  background: linear-gradient(135deg, var(--tour), #eb5a4e);
+}
+
+.apt-marker-badge {
+  position: absolute;
+  top: -8px;
+  right: -7px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 6px 14px rgba(22, 33, 62, 0.16);
+}
+
+.apt-marker-badge.starred {
+  background: linear-gradient(135deg, #d6a128, #f6d35a);
+  color: #4c3200;
+}
+
+.apt-marker-badge.tour {
+  background: linear-gradient(135deg, #ffd7d3, #fff3f1);
+  color: var(--tour);
+}
+
+.tooltip-card .tooltip-flag {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .leaflet-tooltip.apt-tooltip {
