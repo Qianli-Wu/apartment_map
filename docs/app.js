@@ -2,6 +2,7 @@ const MAP_CACHE_KEY = "south-bay-apartment-map-v5";
 const GEOCODE_DELAY_MS = 1100;
 const DEFAULT_CENTER = [37.3947, -122.0862];
 const DEFAULT_ZOOM = 11;
+const DATA_VERSION = "20260320-1";
 
 const state = {
   apartments: [],
@@ -65,7 +66,7 @@ async function initialize() {
 }
 
 async function loadApartments() {
-  const response = await fetch("./apartments-data.json", {
+  const response = await fetch(`./apartments-data.json?v=${DATA_VERSION}`, {
     cache: "no-store"
   });
 
