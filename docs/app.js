@@ -25,11 +25,14 @@ const markerLayer = L.layerGroup().addTo(map);
 
 const candidateCountEl = document.getElementById("candidate-count");
 const visibleCountEl = document.getElementById("visible-count");
+const tourCountEl = document.getElementById("tour-count");
 const researchDateEl = document.getElementById("research-date");
 const cityFiltersEl = document.getElementById("city-filters");
 const clearSelectionButton = document.getElementById("clear-selection-button");
 const panelEmptyEl = document.getElementById("panel-empty");
 const panelCardEl = document.getElementById("panel-card");
+const tourListEl = document.getElementById("tour-list");
+const tourListEmptyEl = document.getElementById("tour-list-empty");
 
 void initialize();
 
@@ -38,6 +41,7 @@ async function initialize() {
     state.selectedApartmentId = null;
     refreshMarkerStyles();
     renderPanel();
+    renderScheduledTours();
   });
 
   try {
@@ -48,11 +52,13 @@ async function initialize() {
     renderCityFilters();
     renderMarkersFromCache();
     updateCounters();
+    renderScheduledTours();
     void geocodeMissingApartments();
   } catch (error) {
     console.error("Failed to initialize apartment map", error);
     candidateCountEl.textContent = "0";
     visibleCountEl.textContent = "0";
+    tourCountEl.textContent = "0";
     researchDateEl.textContent = "Unavailable";
     renderLoadError();
   }
@@ -111,6 +117,7 @@ function renderCityFilters() {
       renderPanel(getSelectedApartment());
       fitVisibleBounds();
       updateCounters();
+      renderScheduledTours();
     });
     cityFiltersEl.appendChild(button);
   });
@@ -167,6 +174,7 @@ function buildMarker(apartment, coords) {
     state.selectedApartmentId = apartment.id;
     refreshMarkerStyles();
     renderPanel(apartment);
+    renderScheduledTours();
   });
 
   return marker;
@@ -389,6 +397,7 @@ function fitVisibleBounds() {
 
 function updateCounters() {
   visibleCountEl.textContent = String(getVisibleApartments().length);
+  tourCountEl.textContent = String(getScheduledTours().length);
 }
 
 function getVisibleApartments() {
@@ -404,6 +413,60 @@ function clearSelectionIfHidden() {
   if (!selected || !matchesCityFilter(selected)) {
     state.selectedApartmentId = null;
   }
+}
+
+function getScheduledTours() {
+  return getVisibleApartments()
+    .filter((apartment) => apartment.tourDateTime)
+    .map((apartment) => ({
+      apartment,
+      sortValue: getTourSortValue(apartment.tourDateTime)
+    }))
+    .sort((left, right) => {
+      if (left.sortValue === null && right.sortValue === null) {
+        return left.apartment.apartment.localeCompare(right.apartment.apartment);
+      }
+
+      if (left.sortValue === null) {
+        return 1;
+      }
+
+      if (right.sortValue === null) {
+        return -1;
+      }
+
+      return left.sortValue - right.sortValue;
+    })
+    .map((item) => item.apartment);
+}
+
+function renderScheduledTours() {
+  const tours = getScheduledTours();
+  tourListEl.innerHTML = "";
+
+  if (!tours.length) {
+    tourListEmptyEl.classList.remove("hidden");
+    return;
+  }
+
+  tourListEmptyEl.classList.add("hidden");
+
+  tours.forEach((apartment) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `tour-card${
+      apartment.id === state.selectedApartmentId ? " active" : ""
+    }`;
+    button.innerHTML = buildTourCardMarkup(apartment);
+    button.addEventListener("click", () => {
+      state.selectedApartmentId = apartment.id;
+      refreshMarkerStyles();
+      renderPanel(apartment);
+      renderScheduledTours();
+      focusApartment(apartment);
+    });
+    tourListEl.appendChild(button);
+  });
 }
 
 function getSelectedApartment() {
@@ -500,9 +563,34 @@ function formatDateTime(value) {
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
+    year: "numeric",
     hour: "numeric",
     minute: "2-digit"
   }).format(date);
+}
+
+function getTourSortValue(value) {
+  if (!value) {
+    return null;
+  }
+
+  const raw = String(value).trim();
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw.includes("T")
+    ? raw
+    : raw.match(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}/)
+      ? raw.replace(" ", "T")
+      : raw;
+
+  const date = new Date(normalized);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date.getTime();
 }
 
 function getLatestResearchDate() {
@@ -568,6 +656,9 @@ function renderLoadError() {
       Run <code>python3 tools/sync_apartment_data.py</code> and reload the page.
     </p>
   `;
+  tourListEl.innerHTML = "";
+  tourListEmptyEl.classList.remove("hidden");
+  tourListEmptyEl.textContent = "Apartment data could not be loaded.";
 }
 
 function normalizeApartmentFlags(apartment) {
@@ -587,4 +678,42 @@ function parseBoolean(value) {
 function normalizeOptionalString(value) {
   const normalized = String(value || "").trim();
   return normalized || null;
+}
+
+function buildTourCardMarkup(apartment) {
+  const flags = [
+    `<span class="tour-flag city">${escapeHtml(apartment.city)}</span>`
+  ];
+
+  if (apartment.starred) {
+    flags.push('<span class="tour-flag starred">Starred</span>');
+  }
+
+  return `
+    <div class="tour-card-head">
+      <div>
+        <p class="panel-kicker">Scheduled Tour</p>
+        <p class="tour-card-name">${escapeHtml(apartment.apartment)}</p>
+      </div>
+      <span class="tour-time-pill">${escapeHtml(formatDateTime(apartment.tourDateTime))}</span>
+    </div>
+    <div class="tour-card-meta">
+      <span><strong>${escapeHtml(formatRent(apartment.listedRent))}</strong></span>
+      <span class="tour-meta">${escapeHtml(apartment.closestCaltrain || "Transit pending")} • ${escapeHtml(apartment.walkTime || "walk pending")}</span>
+      <span class="tour-meta">${escapeHtml(apartment.address || "")}</span>
+    </div>
+    <div class="tour-card-flags">${flags.join("")}</div>
+  `;
+}
+
+function focusApartment(apartment) {
+  const marker = state.markers.get(apartment.id);
+  if (!marker) {
+    return;
+  }
+
+  map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 13), {
+    duration: 0.6
+  });
+  marker.openTooltip();
 }

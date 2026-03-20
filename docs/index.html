@@ -41,6 +41,10 @@
             <strong id="visible-count">--</strong>
           </div>
           <div class="stat-card">
+            <span class="stat-label">Scheduled Tours</span>
+            <strong id="tour-count">--</strong>
+          </div>
+          <div class="stat-card">
             <span class="stat-label">Window Ends</span>
             <strong>Apr 10, 2026</strong>
           </div>
@@ -203,6 +207,22 @@
             </div>
           </article>
         </aside>
+      </section>
+
+      <section class="tour-board">
+        <div class="tour-board-head">
+          <div>
+            <p class="eyebrow">Scheduled Tours</p>
+            <h2>Upcoming Tours</h2>
+          </div>
+          <p class="tour-board-copy">
+            Sorted by scheduled time. Click a row to focus that apartment on the map.
+          </p>
+        </div>
+        <div class="tour-list-empty hidden" id="tour-list-empty">
+          No tours scheduled for the current filter yet.
+        </div>
+        <div class="tour-list" id="tour-list"></div>
       </section>
     </div>
 
